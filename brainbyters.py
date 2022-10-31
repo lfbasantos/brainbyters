@@ -5,111 +5,190 @@ lfbasantos@gmail.com
 PUC/PR - Raciocínio Computacional
 """
 
-# imports
+#
+## imports
 import random 
+import os 
 
-# Tela Inicial - Menu Principal
-msg = 'Seja bem-vindo(a) ao Brain Byters!'
-print(msg)
-msg = 'Selecione uma opção:'
-print(msg)
-msg = '1 - Iniciar'
-print(msg)
-msg = '2 - Ajuda'
-print(msg)
-msg = '3 - Sair'
-print(msg)
-opt = int(input("Digite 1, 2 ou 3 ->"))
-msg="Você selecionou %s." % opt 
-print(msg)
+#
+## Inicio - Main
+while True:
+    os.system('cls')
+    #
+    ## Tela Inicial - Menu Principal
+    menuInicial = False
+    print('Seja bem-vindo(a) ao Brain Byters!')
+    print('Selecione uma opção:')
+    print('1 - Iniciar')
+    print('2 - Manual')
+    print('3 - Sair')
+    while True:
+        try:
+            opt = int(input("Digite 1, 2 ou 3 ->"))
+            if opt >= 1 and opt <= 3:
+                break 
+            else:
+                print("Digite um número de 1 a 3")
+        except ValueError:
+            print("Digite um número de 1 a 3")
+    #
+    ## Encerra
+    if opt == 3:
+        print("Jogo encerrado.")
+        break 
 
-# Variaveis
-qtdC = 0
-qtdT = 0
-qtdP = 0
-dadoVerde="CPCTPC"
-dadoAmarelo="TPCTPC"
-dadoVermelho="TPTCPT"
-tubo="GYRGYRGYRGYRG"
+    #
+    ## Manual (TBD)
+    elif opt == 2:
+        print("TBD") 
+        print("TBD")
+        print("TBD")
+        print("TBD")
+        print("TBD")
+        print("TBD")
+        print("TBD")
+        input("Voltar->")
+        continue 
 
-# Verifica opções
-if opt == 1:
-    qtd = int(input("Digite o número de jogadores ->"))
-    if qtd > 1:
-        # Sorteando os Dados
-        dado1 = random.choice(tubo)
-        dado2 = random.choice(tubo)
-        dado3 = random.choice(tubo)
-        if dado1 == "Y":
-            dado1 = "Amarelo"
-        elif dado1 == "G":
-            dado1 = "Verde"
-        else:
-            dado1 = "Vermelho"
-        if dado2 == "Y":
-            dado2 = "Amarelo"
-        elif dado2 == "G":
-            dado2 = "Verde"
-        else:
-            dado2 = "Vermelho"
-        if dado3 == "Y":
-            dado3 = "Amarelo"
-        elif dado3 == "G":
-            dado3 = "Verde"
-        else:
-            dado3 = "Vermelho"
-        msg = "Dados: {}, {} e {}".format(dado1, dado2, dado3)
-        print(msg)
+    #
+    ## Inicia fluxo da partida
+    else:
+        while True and menuInicial == False:
+            #
+            ## Variaveis
+            qtdC = 0
+            qtdT = 0
+            qtdP = 0
+            dadoVerde="CPCTPC"
+            dadoAmarelo="TPCTPC"
+            dadoVermelho="TPTCPT"
+            tubo=[
+                dadoVerde,dadoAmarelo,dadoVermelho,dadoVerde,
+                dadoAmarelo,dadoVermelho,dadoVerde,dadoAmarelo,
+                dadoVermelho,dadoVerde,dadoAmarelo,dadoVermelho,dadoVerde
+            ]
+            jogadas=[]
+            jogadores=[]
 
-        # Sorteia
-        # Dado 1
-        if dado1 == "Verde":
-            res1 = random.choice(dadoVerde)
-        elif dado1 == "Amarelo":
-            res1 = random.choice(dadoAmarelo)
-        else:
-            res1 = random.choice(dadoVermelho)
-        # Dado 2
-        if dado2 == "Verde":
-            res2 = random.choice(dadoVerde)
-        elif dado2 == "Amarelo":
-            res2 = random.choice(dadoAmarelo)
-        else:
-            res2 = random.choice(dadoVermelho)
-        # Dado 3
-        if dado3 == "Verde":
-            res3 = random.choice(dadoVerde)
-        elif dado3 == "Amarelo":
-            res3 = random.choice(dadoAmarelo)
-        else:
-            res3 = random.choice(dadoVermelho)
-        
-        # Contabiliza
-        # Res 1
-        if res1 == "C":
-            qtdC = qtdC + 1
-        elif res1 == "T":
-            qtdT = qtdT + 1
-        else:
-            qtdP = qtdP + 1
-        # Res 2
-        if res2 == "C":
-            qtdC = qtdC + 1
-        elif res2 == "T":
-            qtdT = qtdT + 1
-        else:
-            qtdP = qtdP + 1
-        # Res 3
-        if res3 == "C":
-            qtdC = qtdC + 1
-        elif res3 == "T":
-            qtdT = qtdT + 1
-        else:
-            qtdP = qtdP + 1
-        
-        # Resultado 
-        msg = "Cérebros - {}, Pegadas - {}, Tiros - {}".format(qtdC, qtdP, qtdT)
-        print(msg)
-    else: 
-        print("Este jogo precisa de pelo menos 2 jogadores.")
+            #
+            ## Verifica quantidade de jogadores
+            while True:
+                try:
+                    qtd = int(input("Digite o número de jogadores ->"))
+                    if qtd > 1:
+                        break 
+                    else:
+                        print("Este jogo precisa de pelo menos 2 jogadores.")
+                except ValueError:
+                    print("Valor invalido")
+            
+            #
+            ## Solicita nomes dos jogadores
+            c=1
+            while c < qtd+1:
+                nome=str(input("Digite o nome do jogador {} ->".format(c))) 
+                jogadores.append(nome)
+                c = c + 1
 
+            #
+            ## Processa turnos
+            indexJogador = 1
+            while True:
+                #
+                ## Verifica se acabou a lista de jogadores e reinicia
+                if indexJogador > qtd:
+                    indexJogador = 1
+                
+                #
+                ##
+                os.system('cls')
+                print("Rodada do Jogador {}, {}".format(indexJogador, jogadores[indexJogador-1]))
+                
+                #
+                ## Opções
+                while True:
+                    try:
+                        print("Selecione uma opção:")
+                        print("1 - Jogar Rodada")
+                        print("2 - Passar")
+                        print("3 - Encerrar Jogo")
+                        opt = int(input("->"))
+                        if opt == 1 or opt == 2 or opt == 3:
+                            break 
+                        else:
+                            print("Digite número 1, 2 ou 3")
+                    except ValueError:
+                        print("Valor invalido")
+                
+                #
+                ## Rodadas
+                os.system('cls')
+                if opt == 1:
+                    #
+                    ## Zerando lista no início da rodada
+                    jogadas.clear()
+
+                    #
+                    ## Sorteando os Dados
+                    for i in [0,1,2]:
+                        idx = random.randint(0, 12)
+                        dado = tubo[idx]
+
+                        #
+                        ## 
+                        if dado == "CPCTPC":
+                            print("Dado Verde")
+                        elif dado == "TPCTPC":
+                            print("Dado Amarelo")
+                        else:
+                            print("Dado Vermelho")
+                        
+                        #
+                        ##
+                        jogadas.append(dado)
+
+                        #
+                        ##
+
+
+                    #
+                    # Sorteia e Verifica faces dos dados
+                    for jogada in jogadas:
+                        lancamento = random.randint(0,5)
+                        if jogada[lancamento] == "C":
+                            print("Você comeu um cérebro")
+                            qtdC = qtdC + 1
+                        elif jogada[lancamento] == "T":
+                            print("Você levou um tiro.")
+                            qtdT = qtdT + 1
+                        else:
+                            print("Uma vítima fugiu")
+                            qtdP = qtdP + 1
+
+                    # Resultado 
+                    msg = "Score: Cérebros - {}, Pegadas - {}, Tiros - {}".format(qtdC, qtdP, qtdT)
+                    print(msg)
+                    pause=input("Enter....")
+
+                    #
+                    ## Valida se venceu ou morreu
+                    if qtdT > 2 or qtdC > 12:
+                        if qtdT > 2:
+                            print("Headshot! Você já era.")
+                        if qtdC > 12:
+                            print("Parabéns Brain Byter você venceu!")
+                
+                #
+                ## Passa
+                if opt == 2:
+                    qtdC=0
+                    qtdP=0
+                    qtdT=0
+                    indexJogador = indexJogador + 1
+                    continue
+
+                #
+                ## Encerra 
+                if opt == 3:
+                    menuInicial = True
+                    break
