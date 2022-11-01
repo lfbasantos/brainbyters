@@ -3,6 +3,7 @@ Luiz Filipe Bandeira Alves dos Santos
 2022-10
 lfbasantos@gmail.com
 PUC/PR - Raciocínio Computacional
+Python 3.11.0
 """
 
 #
