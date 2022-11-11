@@ -70,6 +70,9 @@ while True:
             ]
             jogadas=[]
             jogadores=[]
+            scoreT=[]
+            scoreC=[]
+            scoreP=[]
 
             #
             ## Verifica quantidade de jogadores
@@ -89,6 +92,9 @@ while True:
             while c < qtd+1:
                 nome=str(input("Digite o nome do jogador {} ->".format(c))) 
                 jogadores.append(nome)
+                scoreC.append(0)
+                scoreT.append(0)
+                scoreP.append(0)
                 c = c + 1
 
             #
@@ -105,6 +111,14 @@ while True:
                 os.system('cls')
                 print("Rodada do Jogador {}, {}".format(indexJogador, jogadores[indexJogador-1]))
                 
+                #
+                ## Puxa Score da Lista (no início estará zerada)
+                qtdC = scoreC[indexJogador-1]
+                qtdT = scoreT[indexJogador-1]
+                qtdP = scoreP[indexJogador-1]
+                msg = "Score: Cérebros - {}, Pegadas - {}, Tiros - {}".format(qtdC, qtdP, qtdT)
+                print(msg)
+
                 #
                 ## Opções
                 while True:
@@ -148,10 +162,6 @@ while True:
                         ##
                         jogadas.append(dado)
 
-                        #
-                        ##
-
-
                     #
                     # Sorteia e Verifica faces dos dados
                     for jogada in jogadas:
@@ -159,12 +169,15 @@ while True:
                         if jogada[lancamento] == "C":
                             print("Você comeu um cérebro")
                             qtdC = qtdC + 1
+                            scoreC[indexJogador-1] = qtdC
                         elif jogada[lancamento] == "T":
                             print("Você levou um tiro.")
                             qtdT = qtdT + 1
+                            scoreT[indexJogador-1] = qtdT
                         else:
                             print("Uma vítima fugiu")
                             qtdP = qtdP + 1
+                            scoreP[indexJogador-1] = qtdP
 
                     # Resultado 
                     msg = "Score: Cérebros - {}, Pegadas - {}, Tiros - {}".format(qtdC, qtdP, qtdT)
@@ -173,18 +186,17 @@ while True:
 
                     #
                     ## Valida se venceu ou morreu
-                    if qtdT > 2 or qtdC > 12:
-                        if qtdT > 2:
+                    if scoreT[indexJogador-1] > 2 or scoreC[indexJogador-1] > 12:
+                        if scoreT[indexJogador-1] > 2:
                             print("Headshot! Você já era.")
-                        if qtdC > 12:
+                            pause=input("Enter....")
+                        if scoreC[indexJogador-1] > 12:
                             print("Parabéns Brain Byter você venceu!")
+                            pause=input("Enter....")
                 
                 #
                 ## Passa
                 if opt == 2:
-                    qtdC=0
-                    qtdP=0
-                    qtdT=0
                     indexJogador = indexJogador + 1
                     continue
 
